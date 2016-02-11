@@ -62,7 +62,7 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-% Feedforward
+% feedforward from initial theta
 X = [ones(m, 1) X];
 a2 = sigmoid(X * Theta1');
 
@@ -84,7 +84,18 @@ neg = (1 - yk)' .* log(1 - h);
 % compute cost
 J = ((1/m) * sum(sum(pos - neg)));
 
+% compute regularization term
+theta1 = Theta1(:,2:end);
+theta2 = Theta2(:,2:end);
+sum_theta1 = sum(sum(theta1 .* theta1));
+sum_theta2 = sum(sum(theta2 .* theta2));
+reg_component = (lambda / (2*m)) * (sum_theta1 + sum_theta2);
+J = J + reg_component;
+
 % -------------------------------------------------------------
+
+
+
 
 % =========================================================================
 
