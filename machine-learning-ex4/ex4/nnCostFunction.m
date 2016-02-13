@@ -63,8 +63,8 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 % feedforward from initial theta
-X = [ones(m, 1) X];
-a2 = sigmoid(X * Theta1');
+a1 = [ones(m, 1) X];
+a2 = sigmoid(a1 * Theta1');
 
 a2 = [ones(m, 1) a2];
 h = sigmoid(a2 * Theta2');
@@ -92,7 +92,12 @@ sum_theta2 = sum(sum(theta2 .* theta2));
 reg_component = (lambda / (2*m)) * (sum_theta1 + sum_theta2);
 J = J + reg_component;
 
+% Backpropagation
 % -------------------------------------------------------------
+
+for t = 1:m
+  a3 = h(t,:);
+endfor
 
 
 
