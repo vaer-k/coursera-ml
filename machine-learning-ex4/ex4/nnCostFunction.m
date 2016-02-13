@@ -61,14 +61,14 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+% -------------------------------------------------------------
 
 % feedforward from initial theta
-a1 = [ones(m, 1) X];
-a2 = sigmoid(a1 * Theta1');
+X = [ones(m, 1) X];
+a2 = sigmoid(X * Theta1');
 
 a2 = [ones(m, 1) a2];
 h = sigmoid(a2 * Theta2');
-
 yk = [];
 y_tpl = [1:num_labels]';
 for i = 1:m
@@ -93,14 +93,28 @@ reg_component = (lambda / (2*m)) * (sum_theta1 + sum_theta2);
 J = J + reg_component;
 
 % Backpropagation
-% -------------------------------------------------------------
-
+a2_src = a2; % forced to do this because of namespace collision
 for t = 1:m
+  a1 = X(t,:);
+  a2 = a2_src(t,:);
   a3 = h(t,:);
+  z2 = a1 * Theta1';
+
+  d3 = (a3 - yk(:,t)')';
+  g_prime = [1 sigmoidGradient(z2)];
+  d2 = (Theta2' * d3) .* g_prime';
+  d2 = d2(2:end);
+
+  Theta1_grad = Theta1_grad + (d2 * a1);
+  Theta2_grad = Theta2_grad + (d3 * a2);
 endfor
 
+Theta1_grad = (1/m) .* Theta1_grad;
+Theta2_grad = (1/m) .* Theta2_grad;
 
-
+% Regularize gradients
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + ((lambda/m) .* Theta1(:, 2:end));
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + ((lambda/m) .* Theta2(:, 2:end));
 
 % =========================================================================
 
