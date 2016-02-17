@@ -21,13 +21,13 @@ grad = zeros(size(theta));
 
 h = X * theta;
 squares = (h - y) .^ 2;
-J = (sum(squares) + (lambda * (theta(2:end) * theta(2:end)'))) / (2 * m);
+J = (sum(squares) + (lambda * (theta(2:end)' * theta(2:end)))) / (2 * m);
 
-grad = (X' * (h - y)) / m;
-j_reg = (lambda / m) * sum(theta(2:end));
-grad = grad + j_reg;
-
-theta = theta - (alpha * J);
+% grad = (X' * (h - y)) / m;
+% j_reg = (lambda / m) * sum(theta(2:end));
+% grad = grad + j_reg;
+%
+% theta = theta - (alpha * J);
 
 % =========================================================================
 
