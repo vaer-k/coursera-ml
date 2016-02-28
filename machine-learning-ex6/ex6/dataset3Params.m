@@ -23,8 +23,10 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
-for C_test = [0.01 0.03 0.1 0.3 1 3 10 30]
-  for sigma_test = [0.01 0.03 0.1 0.3 1 3 10 30]
+test_values = [0.01 0.03 0.1 0.3 1 3 10 30];
+
+for C_test = test_values;
+  for sigma_test = test_values;
     model = svmTrain(X, y, C_test, @(x1, x2) gaussianKernel(x1, x2, sigma_test));
     error = mean(double(svmPredict(model, Xval) ~= yval));
 
@@ -39,11 +41,6 @@ for C_test = [0.01 0.03 0.1 0.3 1 3 10 30]
     end
   end
 end
-
-
-
-
-
 
 % =========================================================================
 
